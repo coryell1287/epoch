@@ -1,9 +1,6 @@
 package com.epoch.activitysystem.controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -15,11 +12,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.epoch.activitysystem.configuration.constants.swagger.SwaggerConstants;
 import com.epoch.activitysystem.entity.EmployeeEntity;
-import com.epoch.activitysystem.exceptions.EmployeeNotFoundException;
 import com.epoch.activitysystem.service.EmployeeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -235,39 +233,32 @@ public class EmployeeControllerTest {
   void shouldDeleteEmployeeById() throws Exception {
     final UUID ID = UUID.randomUUID();
 
-    doNothing().when(service).deleteBy(ID);
+    Map<String, String> message = new HashMap<>();
+    message.put("message", SwaggerConstants.ENTITY_DELETED_DESCRIPTION);
 
+    when(service.deleteBy(ID)).thenReturn(message);
     mockMvc
       .perform(delete("/v1/employee/{id}", ID))
-      .andExpect(status().isNoContent())
+      .andExpect(status().isOk())
+      .andExpect(
+        jsonPath("$.message").value(SwaggerConstants.ENTITY_DELETED_DESCRIPTION)
+      )
       .andDo(print());
   }
 
   @Test
   void shouldDeleteAllEmployess() throws Exception {
-    doNothing().when(service).deleteAll();
+    Map<String, String> message = new HashMap<>();
+    message.put("message", SwaggerConstants.ALL_ENTITITES_DELETED_DESCRIPTION);
 
+    when(service.deleteAll()).thenReturn(message);
     mockMvc
       .perform(delete("/v1/employee"))
-      .andExpect(status().isNoContent())
-      .andDo(print());
-  }
-
-  @Test
-  void shouldReturnEmployeeNotFoundException() throws Exception {
-    final UUID ID = UUID.randomUUID();
-    EmployeeNotFoundException exception = assertThrows(
-      EmployeeNotFoundException.class,
-      () -> {
-        when(service.findById(ID)).thenThrow(EmployeeNotFoundException.class);
-      }
-    );
-
-    // when(service.findById(ID)).thenThrow(EmployeeNotFoundException.class);
-    assertEquals(SwaggerConstants.EMPLOYEE_NOT_FOUND, exception.getMessage());
-    mockMvc
-      .perform(get("/v1/employee/{id}", ID))
-      .andExpect(status().isNotFound())
+      .andExpect(status().isOk())
+      .andExpect(
+        jsonPath("$.message")
+          .value(SwaggerConstants.ALL_ENTITITES_DELETED_DESCRIPTION)
+      )
       .andDo(print());
   }
 }

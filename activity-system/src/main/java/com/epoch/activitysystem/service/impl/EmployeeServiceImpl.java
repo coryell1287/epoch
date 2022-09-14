@@ -51,7 +51,7 @@ public class EmployeeServiceImpl implements EmployeeService {
   public Map<String, String> deleteBy(UUID id) {
     return repository
       .findById(id)
-      .map(employee -> deleteEmploye(id))
+      .map(employee -> deleteEmployee(id))
       .orElseThrow(EmployeeNotFoundException::new);
   }
 
@@ -71,14 +71,16 @@ public class EmployeeServiceImpl implements EmployeeService {
       .lastName(entity.getLastName())
       .userName(entity.getUserName())
       .departmentID(UUID.randomUUID())
+      .department(entity.getDepartment())
       .emailAddress(entity.getEmailAddress())
       .role(entity.getRole())
       .onlineStatus(entity.getOnlineStatus())
       .build();
   }
 
-  private Map<String, String> deleteEmploye(UUID id) {
+  private Map<String, String> deleteEmployee(UUID id) {
     Map<String, String> message = new HashMap<>();
+    System.out.println("================================" + "Delete Employee");
     repository.deleteById(id);
     message.put("message", "Employee deleted successfully.");
     return message;
@@ -89,6 +91,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     EmployeeEntity updatedEmployee
   ) {
     return employee
+      .setDepartment(
+        updatedEmployee.getDepartment() != null
+          ? updatedEmployee.getDepartment()
+          : employee.getDepartment()
+      )
       .setEmailAddress(updatedEmployee.getEmailAddress())
       .setUserName(updatedEmployee.getUserName())
       .setOnlineStatus(updatedEmployee.getOnlineStatus())

@@ -28,10 +28,6 @@ import lombok.experimental.Accessors;
 )
 public class EmployeeEntity {
 
-  // @CreationTimestamp
-  // private LocalDateTime createdAt;
-
-  // @UpdateTimestamp
   @Id
   @GeneratedValue
   @Column(name = "ID")
@@ -53,6 +49,9 @@ public class EmployeeEntity {
   @GeneratedValue
   @Column(name = "DEPARTMENT_ID")
   private UUID departmentID;
+
+  @Column(name = "DEPARTMENT")
+  private String department;
 
   @Column(name = "ROLE")
   private String role;

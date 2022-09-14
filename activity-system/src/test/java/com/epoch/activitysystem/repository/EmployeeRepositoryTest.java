@@ -2,11 +2,9 @@ package com.epoch.activitysystem.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.epoch.activitysystem.entity.EmployeeEntity;
-import com.epoch.activitysystem.exceptions.EmployeeNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -32,6 +30,7 @@ public class EmployeeRepositoryTest {
     final String USERNAME = "joeUser";
     final String EMAILADDRESS = "mail@outlook.com";
     final UUID DEPARTMENTID = UUID.randomUUID();
+    final String DEPARTMENT = "Marketing";
     final String FIRSTNAME = "John";
     final String LASTNAME = "Doe";
     final Boolean ONLINESTATUS = true;
@@ -44,6 +43,7 @@ public class EmployeeRepositoryTest {
       .lastName(LASTNAME)
       .emailAddress(EMAILADDRESS)
       .departmentID(DEPARTMENTID)
+      .department(DEPARTMENT)
       .onlineStatus(ONLINESTATUS)
       .role(ROLE)
       .build();
@@ -55,21 +55,26 @@ public class EmployeeRepositoryTest {
     assertEquals(LASTNAME, employee.getLastName());
     assertEquals(EMAILADDRESS, employee.getEmailAddress());
     assertEquals(DEPARTMENTID, employee.getDepartmentID());
+    assertEquals(DEPARTMENT, employee.getDepartment());
     assertEquals(ONLINESTATUS, employee.getOnlineStatus());
     assertEquals(ROLE, employee.getRole());
   }
 
   @Test
   void should_find_all_employees() {
-    final String USERNAME = "joeUser";
-    final String EMAILADDRESS = "mail@outlook.com";
+    final String DEPARTMENT = "Marketing";
+    final UUID DEPARTMENTID = UUID.randomUUID();
+    final String USERNAME = "joeUser2";
+    final String EMAILADDRESS = "mail2@outlook.com";
     final String FIRSTNAME = "John";
     final String LASTNAME = "Doe";
     final Boolean ONLINESTATUS = true;
     final String ROLE = "Manager";
 
-    final String USERNAME2 = "morenoUser";
-    final String EMAILADDRESS2 = "moreno.com";
+    final String DEPARTMENT2 = "HR";
+    final UUID DEPARTMENTID2 = UUID.randomUUID();
+    final String USERNAME2 = "morenoUser2";
+    final String EMAILADDRESS2 = "moreno2@mail.com";
     final String FIRSTNAME2 = "Francesco";
     final String LASTNAME2 = "Moreno";
     final Boolean ONLINESTATUS2 = false;
@@ -77,6 +82,8 @@ public class EmployeeRepositoryTest {
 
     EmployeeEntity employeeEntity1 = EmployeeEntity
       .builder()
+      .department(DEPARTMENT)
+      .departmentID(DEPARTMENTID)
       .userName(USERNAME)
       .firstName(FIRSTNAME)
       .lastName(LASTNAME)
@@ -92,6 +99,8 @@ public class EmployeeRepositoryTest {
       .userName(USERNAME2)
       .firstName(FIRSTNAME2)
       .lastName(LASTNAME2)
+      .department(DEPARTMENT2)
+      .departmentID(DEPARTMENTID2)
       .emailAddress(EMAILADDRESS2)
       .onlineStatus(ONLINESTATUS2)
       .role(ROLE2)
@@ -108,6 +117,7 @@ public class EmployeeRepositoryTest {
   void should_find_employe_by_id() {
     final String USERNAME = "joeUser";
     final String EMAILADDRESS = "mail@outlook.com";
+    final String DEPARTMENT = "Marketing";
     final String FIRSTNAME = "John";
     final String LASTNAME = "Doe";
     final Boolean ONLINESTATUS = true;
@@ -118,6 +128,7 @@ public class EmployeeRepositoryTest {
       .userName(USERNAME)
       .firstName(FIRSTNAME)
       .lastName(LASTNAME)
+      .department(DEPARTMENT)
       .emailAddress(EMAILADDRESS)
       .onlineStatus(ONLINESTATUS)
       .role(ROLE)
@@ -136,6 +147,7 @@ public class EmployeeRepositoryTest {
     final String USERNAME = "joeUser";
     final String EMAILADDRESS = "mail@outlook.com";
     final String FIRSTNAME = "John";
+    final String DEPARTMENT = "Marketing";
     final String LASTNAME = "Doe";
     final Boolean ONLINESTATUS = true;
     final String ROLE = "Manager";
@@ -149,6 +161,7 @@ public class EmployeeRepositoryTest {
       .userName(USERNAME)
       .firstName(FIRSTNAME)
       .lastName(LASTNAME)
+      .department(DEPARTMENT)
       .emailAddress(EMAILADDRESS)
       .onlineStatus(ONLINESTATUS)
       .role(ROLE)
@@ -173,6 +186,7 @@ public class EmployeeRepositoryTest {
   @Test
   void should_delete_employee_by_id() {
     final String USERNAME = "joeUser";
+    final String DEPARTMENT = "Marketing";
     final String EMAILADDRESS = "mail@outlook.com";
     final String FIRSTNAME = "John";
     final String LASTNAME = "Doe";
@@ -185,6 +199,7 @@ public class EmployeeRepositoryTest {
       .emailAddress(EMAILADDRESS)
       .firstName(FIRSTNAME)
       .lastName(LASTNAME)
+      .department(DEPARTMENT)
       .onlineStatus(ONLINESTATUS)
       .role(ROLE)
       .build();
@@ -204,11 +219,13 @@ public class EmployeeRepositoryTest {
     final String EMAILADDRESS = "mail@outlook.com";
     final String FIRSTNAME = "John";
     final String LASTNAME = "Doe";
+    final String DEPARTMENT = "Marketing";
     final Boolean ONLINESTATUS = true;
     final String ROLE = "Manager";
-
+    
     final String USERNAME2 = "morenoUser";
-    final String EMAILADDRESS2 = "moreno.com";
+    final String EMAILADDRESS2 = "moreno2@mail.com";
+    final String DEPARTMENT2 = "HR";
     final String FIRSTNAME2 = "Francesco";
     final String LASTNAME2 = "Moreno";
     final Boolean ONLINESTATUS2 = false;
@@ -219,6 +236,7 @@ public class EmployeeRepositoryTest {
       .userName(USERNAME)
       .firstName(FIRSTNAME)
       .lastName(LASTNAME)
+      .department(DEPARTMENT)
       .emailAddress(EMAILADDRESS)
       .onlineStatus(ONLINESTATUS)
       .role(ROLE)
@@ -231,6 +249,7 @@ public class EmployeeRepositoryTest {
       .userName(USERNAME2)
       .firstName(FIRSTNAME2)
       .lastName(LASTNAME2)
+      .department(DEPARTMENT2)
       .emailAddress(EMAILADDRESS2)
       .onlineStatus(ONLINESTATUS2)
       .role(ROLE2)
@@ -247,16 +266,4 @@ public class EmployeeRepositoryTest {
 
   @Test
   void should_insert_user_if_username_does_not_exists() {}
-
-  @Test
-  void testExpectedException() {
-    EmployeeNotFoundException thrown = assertThrows(
-      EmployeeNotFoundException.class,
-      () -> {
-       serv
-      }
-    );
-
-    assertEquals("some message", thrown.getMessage());
-  }
 }

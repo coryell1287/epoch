@@ -12,8 +12,8 @@ public class ConstraintViolationException extends RuntimeException {
   private final String errorCode;
 
   public ConstraintViolationException() {
-    super(ErrorCode.CONSTRAINT_VIOLATION.getMessage());
-    this.errorCode = ErrorCode.CONSTRAINT_VIOLATION.getCode();
-    this.errorMessage = ErrorCode.CONSTRAINT_VIOLATION.getMessage();
+    super(ErrorCode.DATA_INTEGRITY_VIOLATION.getMessage());
+    this.errorCode = ErrorCode.DATA_INTEGRITY_VIOLATION.getCode();
+    this.errorMessage = ErrorCode.DATA_INTEGRITY_VIOLATION.getMessage();
   }
 }

@@ -218,14 +218,12 @@ public class EmployeeController {
       ),
     }
   )
-  @DeleteMapping(
-    value = "/{id}",
-    consumes = { MediaType.APPLICATION_JSON_VALUE },
-    produces = { MediaType.APPLICATION_JSON_VALUE }
-  )
+  @DeleteMapping(value = "/{id}")
   public ResponseEntity<Map<String, String>> deleteEmployeeById(
     @PathVariable("id") UUID id
   ) {
+    System.out.println("=================================== Made it here");
+
     return new ResponseEntity<>(service.deleteBy(id), HttpStatus.OK);
   }
 
@@ -251,11 +249,7 @@ public class EmployeeController {
       ),
     }
   )
-  @DeleteMapping(
-    value = "",
-    consumes = { MediaType.APPLICATION_JSON_VALUE },
-    produces = { MediaType.APPLICATION_JSON_VALUE }
-  )
+  @DeleteMapping(value = "")
   public ResponseEntity<Map<String, String>> deleteAllEmployees() {
     return new ResponseEntity<>(service.deleteAll(), HttpStatus.OK);
   }

@@ -1,10 +1,9 @@
 package com.epoch.activitysystem.exceptions;
 
 import java.time.Instant;
-import javax.persistence.Entity;
+import org.apache.logging.log4j.util.Strings;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.logging.log4j.util.Strings;
 
 @NoArgsConstructor
 @Data
