@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -64,7 +65,7 @@ public class EmployeeController {
     }
   )
   public ResponseEntity<EmployeeEntity> createEmployee(
-    @RequestBody EmployeeEntity employee
+   @Valid @RequestBody EmployeeEntity employee
   ) {
     return new ResponseEntity<>(service.save(employee), HttpStatus.CREATED);
   }
@@ -179,7 +180,7 @@ public class EmployeeController {
   )
   public ResponseEntity<EmployeeEntity> updateEmployeeById(
     @PathVariable("id") UUID id,
-    @RequestBody EmployeeEntity employee
+    @Valid @RequestBody EmployeeEntity employee
   ) {
     // service.findById(id).orElse
     return new ResponseEntity<>(

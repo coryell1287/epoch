@@ -23,6 +23,7 @@
 hs_err_pid*
 
 
+<<<<<<< HEAD
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
@@ -59,3 +60,7 @@ build/
 
 
 **/.lh/
+=======
+*.lh
+*.vscode/
+>>>>>>> 8894fdc (Add Transaction to service logic)

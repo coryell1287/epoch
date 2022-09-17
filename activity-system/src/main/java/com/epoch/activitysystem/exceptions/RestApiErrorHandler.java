@@ -1,7 +1,6 @@
 package com.epoch.activitysystem.exceptions;
 
 import java.time.Instant;
-import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -25,8 +24,7 @@ public class RestApiErrorHandler {
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   public ResponseEntity<ErrorEntity> handleGenericExceptionHandler(
     HttpServletRequest request,
-    Exception ex,
-    Locale locale
+    Exception ex
   ) {
     ErrorEntity error = ErrorUtils
       .createError(
@@ -45,8 +43,7 @@ public class RestApiErrorHandler {
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ResponseEntity<ErrorEntity> handleMethodArgumentNotValidException(
     HttpServletRequest request,
-    MethodArgumentNotValidException ex,
-    Locale locale
+    MethodArgumentNotValidException ex
   ) {
     ErrorEntity error = ErrorUtils
       .createError(
@@ -65,8 +62,7 @@ public class RestApiErrorHandler {
   @ResponseStatus(HttpStatus.NOT_FOUND)
   public ResponseEntity<ErrorEntity> handleEmployeeNotFoundException(
     HttpServletRequest request,
-    EmployeeNotFoundException ex,
-    Locale locale
+    EmployeeNotFoundException ex
   ) {
     ErrorEntity error = ErrorUtils
       .createError(
@@ -85,8 +81,7 @@ public class RestApiErrorHandler {
   @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
   public ResponseEntity<ErrorEntity> handleConstraintException(
     HttpServletRequest request,
-    DataIntegrityViolationException ex,
-    Locale locale
+    DataIntegrityViolationException ex
   ) {
     ErrorEntity error = ErrorUtils
       .createError(

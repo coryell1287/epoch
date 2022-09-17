@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -39,6 +40,7 @@ public class EmployeeEntity {
   @Column(name = "LAST_NAME")
   private String lastName;
 
+  @NotBlank
   @Column(name = "USER_NAME", unique = true)
   private String userName;
 

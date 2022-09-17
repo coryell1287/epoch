@@ -1,5 +1,6 @@
 package com.epoch.activitysystem.exceptions;
 
+import com.epoch.activitysystem.configuration.constants.swagger.SwaggerConstants;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -9,7 +10,7 @@ public enum ErrorCode {
   GENERIC_ERROR("ACTIVITY-0001", "System is unable to complete the request"),
   GENERIC_ALREADY_EXISTS("ACTIVITY-0002", "Already exists"),
   METHOD_ARGUMENT_NOT_VALID("ACTIVITY-0003", "Invalid argument."),
-  EMPLOYEE_NOT_FOUND("ACTIVITY-0004", "Employee not found."),
+  EMPLOYEE_NOT_FOUND("ACTIVITY-0004", SwaggerConstants.EMPLOYEE_NOT_FOUND),
   DATA_INTEGRITY_VIOLATION(
     "ACTIVITY-0005",
     "One or more of the fields is invalid."

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
-@Transactional
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
@@ -22,12 +21,14 @@ public class EmployeeServiceImpl implements EmployeeService {
   EmployeeRepository repository;
 
   @Override
+  @Transactional
   public EmployeeEntity save(EmployeeEntity employee) {
     log.info("Calling save employee service.");
     return repository.save(toEntity(employee));
   }
 
   @Override
+  @Transactional(readOnly = true)
   public EmployeeEntity findById(UUID id) {
     return repository.findById(id).orElseThrow(EmployeeNotFoundException::new);
   }
@@ -38,6 +39,7 @@ public class EmployeeServiceImpl implements EmployeeService {
   }
 
   @Override
+  @Transactional
   public EmployeeEntity updateById(UUID id, EmployeeEntity employee) {
     return repository
       .findById(id)
