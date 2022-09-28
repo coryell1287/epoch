@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "app.activity-sytem.host",
+    "type": "java.lang.String",
+    "description": "Host for the microservice"
+  },
+  {
+    "name": "app.activity-sytem.port",
+    "type": "java.lang.String",
+    "description": "Port for the microservice"
+  },
+  {
+    "name": "spring.data.postgresql.host",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.data.postgresql.host'"
+  }
+]}

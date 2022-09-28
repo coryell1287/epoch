@@ -1,9 +1,23 @@
 version: "3"
+
 services:
-  db:
+  activity-system:
+    build: activity-system
+    mem_limit: 512m
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/activity_feed
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      postgres: 
+        condition: service_healthy
+        
+  postgres:
     restart: always
     image: postgres:latest
     container_name: postgres
+    mem_limit: 512m
     environment:
       - POSTGRES_DB=activity_feed
       - POSTGRES_USER=postgres
@@ -13,6 +27,12 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
       - db-conf:/etc/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   pgadmin:
     container_name: pgadmin4_container
     image: dpage/pgadmin4
