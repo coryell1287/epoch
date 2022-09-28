@@ -1,6 +1,6 @@
 FROM maven:latest AS MAVEN_BUILD
 WORKDIR /build/
-LABEL MAINTAINER="Firas Ben Saad"
+LABEL MAINTAINER="Jamaal Long"
 COPY pom.xml /build/
 COPY src /build/src/
 RUN mvn package
