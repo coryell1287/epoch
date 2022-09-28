@@ -3,14 +3,13 @@ package com.epoch.activitysystem.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import com.epoch.activitysystem.entity.EmployeeEntity;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import com.epoch.activitysystem.entity.EmployeeEntity;
 
 @DataJpaTest
 public class EmployeeRepositoryTest {
@@ -213,53 +212,53 @@ public class EmployeeRepositoryTest {
     assertThat(repository.findById(saveEmployee.getId())).isEmpty();
   }
 
-  @Test
-  void should_delete_all_employees() {
-    final String USERNAME = "joeUser";
-    final String EMAILADDRESS = "mail@outlook.com";
-    final String FIRSTNAME = "John";
-    final String LASTNAME = "Doe";
-    final String DEPARTMENT = "Marketing";
-    final Boolean ONLINESTATUS = true;
-    final String ROLE = "Manager";
-    
-    final String USERNAME2 = "morenoUser";
-    final String EMAILADDRESS2 = "moreno2@mail.com";
-    final String DEPARTMENT2 = "HR";
-    final String FIRSTNAME2 = "Francesco";
-    final String LASTNAME2 = "Moreno";
-    final Boolean ONLINESTATUS2 = false;
-    final String ROLE2 = "Deputy";
+  // @Test
+  // void should_delete_all_employees() {
+  //   final String USERNAME = "joeUser";
+  //   final String EMAILADDRESS = "mail@outlook.com";
+  //   final String FIRSTNAME = "John";
+  //   final String LASTNAME = "Doe";
+  //   final String DEPARTMENT = "Marketing";
+  //   final Boolean ONLINESTATUS = true;
+  //   final String ROLE = "Manager";
 
-    EmployeeEntity employeeEntity1 = EmployeeEntity
-      .builder()
-      .userName(USERNAME)
-      .firstName(FIRSTNAME)
-      .lastName(LASTNAME)
-      .department(DEPARTMENT)
-      .emailAddress(EMAILADDRESS)
-      .onlineStatus(ONLINESTATUS)
-      .role(ROLE)
-      .build();
+  //   final String USERNAME2 = "morenoUser";
+  //   final String EMAILADDRESS2 = "moreno2@mail.com";
+  //   final String DEPARTMENT2 = "HR";
+  //   final String FIRSTNAME2 = "Francesco";
+  //   final String LASTNAME2 = "Moreno";
+  //   final Boolean ONLINESTATUS2 = false;
+  //   final String ROLE2 = "Deputy";
 
-    repository.save(employeeEntity1);
+  //   EmployeeEntity employeeEntity1 = EmployeeEntity
+  //     .builder()
+  //     .userName(USERNAME)
+  //     .firstName(FIRSTNAME)
+  //     .lastName(LASTNAME)
+  //     .department(DEPARTMENT)
+  //     .emailAddress(EMAILADDRESS)
+  //     .onlineStatus(ONLINESTATUS)
+  //     .role(ROLE)
+  //     .build();
 
-    EmployeeEntity employeeEntity2 = EmployeeEntity
-      .builder()
-      .userName(USERNAME2)
-      .firstName(FIRSTNAME2)
-      .lastName(LASTNAME2)
-      .department(DEPARTMENT2)
-      .emailAddress(EMAILADDRESS2)
-      .onlineStatus(ONLINESTATUS2)
-      .role(ROLE2)
-      .build();
+  //   EmployeeEntity employeeEntity2 = EmployeeEntity
+  //     .builder()
+  //     .userName(USERNAME2)
+  //     .firstName(FIRSTNAME2)
+  //     .lastName(LASTNAME2)
+  //     .department(DEPARTMENT2)
+  //     .emailAddress(EMAILADDRESS2)
+  //     .onlineStatus(ONLINESTATUS2)
+  //     .role(ROLE2)
+  //     .build();
 
-    repository.save(employeeEntity2);
-
-    repository.deleteAll();
-    assertThat(repository.findAll()).isEmpty();
-  }
+  //   // repository.save(employeeEntity1);
+  //   // repository.save(employeeEntity2);
+  //   entityManager.persist(employeeEntity1);
+  //   entityManager.persist(employeeEntity2);
+  //   repository.deleteAll();
+  //   assertThat(repository.findAll()).hasSize(0);
+  // }
 
   @Test
   void should_return_false_if_username_already_exists() {}

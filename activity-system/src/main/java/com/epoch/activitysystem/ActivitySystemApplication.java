@@ -27,8 +27,7 @@ import io.swagger.v3.oas.annotations.info.License;
 @SpringBootApplication
 public class ActivitySystemApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ActivitySystemApplication.class, args);
-	}
-
+  public static void main(String[] args) {
+    SpringApplication.run(ActivitySystemApplication.class, args);
+  }
 }

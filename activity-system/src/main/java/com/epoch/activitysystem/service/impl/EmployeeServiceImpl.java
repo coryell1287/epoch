@@ -21,7 +21,6 @@ public class EmployeeServiceImpl implements EmployeeService {
   EmployeeRepository repository;
 
   @Override
-  @Transactional
   public EmployeeEntity save(EmployeeEntity employee) {
     log.info("Calling save employee service.");
     return repository.save(toEntity(employee));
@@ -39,7 +38,6 @@ public class EmployeeServiceImpl implements EmployeeService {
   }
 
   @Override
-  @Transactional
   public EmployeeEntity updateById(UUID id, EmployeeEntity employee) {
     return repository
       .findById(id)
@@ -82,7 +80,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
   private Map<String, String> deleteEmployee(UUID id) {
     Map<String, String> message = new HashMap<>();
-    System.out.println("================================" + "Delete Employee");
     repository.deleteById(id);
     message.put("message", "Employee deleted successfully.");
     return message;
