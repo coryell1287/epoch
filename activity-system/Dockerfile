@@ -1,7 +1,7 @@
 FROM maven:latest AS MAVEN_BUILD
 WORKDIR /build/
-LABEL MAINTAINER="Jamaal Long"
 COPY pom.xml /build/
+RUN mvn dependency:go-offline
 COPY src /build/src/
 RUN mvn package
 

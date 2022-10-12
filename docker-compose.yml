@@ -5,7 +5,9 @@ services:
     build: activity-system
     mem_limit: 512m
     ports:
-      - "8080:8080"
+      - 8080:8080
+    networks:
+      - epoch-network
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/activity_feed
       - SPRING_PROFILES_ACTIVE=docker
@@ -24,6 +26,8 @@ services:
       - POSTGRES_PASSWORD=password
     ports:
       - 54032:5432
+    networks:
+      - epoch-network
     volumes:
       - db-data:/var/lib/postgresql/data
       - db-conf:/etc/postgresql
@@ -41,11 +45,12 @@ services:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: root
     ports:
-      - "5050:80"
+      - 5050:80
 
 volumes:
   db-data:
     driver: local
   db-conf:
     driver: local
-  
+networks:
+  epoch-network:

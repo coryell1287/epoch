@@ -9,11 +9,11 @@ public class ConstraintViolationException extends RuntimeException {
 
   private static final long serialVersion = 1L;
   private final String errorMessage;
-  private final String errorCode;
+  private final String errorType;
 
   public ConstraintViolationException() {
-    super(ErrorCode.DATA_INTEGRITY_VIOLATION.getMessage());
-    this.errorCode = ErrorCode.DATA_INTEGRITY_VIOLATION.getCode();
-    this.errorMessage = ErrorCode.DATA_INTEGRITY_VIOLATION.getMessage();
+    super(ErrorType.DATA_INTEGRITY_VIOLATION.getMessage());
+    this.errorType = ErrorType.DATA_INTEGRITY_VIOLATION.getType();
+    this.errorMessage = ErrorType.DATA_INTEGRITY_VIOLATION.getMessage();
   }
 }

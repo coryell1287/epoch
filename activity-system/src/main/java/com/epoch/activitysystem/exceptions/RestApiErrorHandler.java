@@ -18,8 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 @ControllerAdvice
 public class RestApiErrorHandler {
 
-  private final String STRING_FORMAT = "%s %s";
-
   @ExceptionHandler(Exception.class)
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   public ResponseEntity<ErrorEntity> handleGenericExceptionHandler(
@@ -28,8 +26,8 @@ public class RestApiErrorHandler {
   ) {
     ErrorEntity error = ErrorUtils
       .createError(
-        ErrorCode.GENERIC_ERROR.getMessage(),
-        ErrorCode.GENERIC_ERROR.getCode(),
+        ErrorType.GENERIC_ERROR.getMessage(),
+        ErrorType.GENERIC_ERROR.getType(),
         HttpStatus.INTERNAL_SERVER_ERROR.value()
       )
       .setUrl(request.getRequestURL().toString())
@@ -47,8 +45,8 @@ public class RestApiErrorHandler {
   ) {
     ErrorEntity error = ErrorUtils
       .createError(
-        ErrorCode.METHOD_ARGUMENT_NOT_VALID.getMessage(),
-        ErrorCode.METHOD_ARGUMENT_NOT_VALID.getMessage(),
+        ErrorType.METHOD_ARGUMENT_NOT_VALID.getMessage(),
+        ErrorType.METHOD_ARGUMENT_NOT_VALID.getMessage(),
         HttpStatus.BAD_REQUEST.value()
       )
       .setUrl(request.getRequestURL().toString())
@@ -66,8 +64,8 @@ public class RestApiErrorHandler {
   ) {
     ErrorEntity error = ErrorUtils
       .createError(
-        ErrorCode.EMPLOYEE_NOT_FOUND.getMessage(),
-        ErrorCode.EMPLOYEE_NOT_FOUND.getCode(),
+        ErrorType.EMPLOYEE_NOT_FOUND.getMessage(),
+        ErrorType.EMPLOYEE_NOT_FOUND.getType(),
         HttpStatus.NOT_FOUND.value()
       )
       .setUrl(request.getRequestURL().toString())
@@ -85,8 +83,8 @@ public class RestApiErrorHandler {
   ) {
     ErrorEntity error = ErrorUtils
       .createError(
-        ex.getMostSpecificCause().getMessage().split("Key")[1],
-        ErrorCode.DATA_INTEGRITY_VIOLATION.getCode(),
+        ex.getMostSpecificCause().getMessage().split("Key")[1].trim(),
+        ErrorType.DATA_INTEGRITY_VIOLATION.getType(),
         HttpStatus.UNPROCESSABLE_ENTITY.value()
       )
       .setUrl(request.getRequestURL().toString())

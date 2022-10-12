@@ -8,12 +8,12 @@ import lombok.Setter;
 public class EmployeeNotFoundException extends RuntimeException {
 
   private final String errorMessage;
-  private final String errorCode;
+  private final String errorType;
   private static final long serialVersion = 1L;
 
   public EmployeeNotFoundException() {
-    super(ErrorCode.EMPLOYEE_NOT_FOUND.getMessage());
-    this.errorCode = ErrorCode.EMPLOYEE_NOT_FOUND.getCode();
-    this.errorMessage = ErrorCode.EMPLOYEE_NOT_FOUND.getMessage();
+    super(ErrorType.EMPLOYEE_NOT_FOUND.getMessage());
+    this.errorType = ErrorType.EMPLOYEE_NOT_FOUND.getType();
+    this.errorMessage = ErrorType.EMPLOYEE_NOT_FOUND.getMessage();
   }
 }

@@ -1,16 +1,21 @@
 package com.epoch.activitysystem.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.epoch.activitysystem.entity.DepartmentEntity;
+import com.epoch.activitysystem.entity.EmployeeEntity;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+import javax.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import com.epoch.activitysystem.entity.EmployeeEntity;
 
+@Transactional
 @DataJpaTest
 public class EmployeeRepositoryTest {
 
@@ -26,69 +31,106 @@ public class EmployeeRepositoryTest {
 
   @Test
   void should_store_an_employee() {
-    final String USERNAME = "joeUser";
-    final String EMAILADDRESS = "mail@outlook.com";
-    final UUID DEPARTMENTID = UUID.randomUUID();
-    final String DEPARTMENT = "Marketing";
-    final String FIRSTNAME = "John";
-    final String LASTNAME = "Doe";
-    final Boolean ONLINESTATUS = true;
-    final String ROLE = "Manager";
+    final String firstName = "John";
+    final String lastName = "Doe";
+    final String userName = "doeman";
+    final String emailAddress = "mail@outlook.com";
+    final Boolean onlineStatus = false;
+
+    final String departmentJobTitle = "Manager";
+    final String departmentName = "Sales";
+    final LocalDate departmentHireDate = LocalDate.now();
+    final String departmentRegionName = "West Coast";
+
+    DepartmentEntity department = DepartmentEntity
+      .builder()
+      .firstName(firstName)
+      .lastName(lastName)
+      .jobTitle(departmentJobTitle)
+      .hireDate(departmentHireDate)
+      .departmentName(departmentName)
+      .regionName(departmentRegionName)
+      .build();
 
     EmployeeEntity employeeEntity = EmployeeEntity
       .builder()
-      .userName(USERNAME)
-      .firstName(FIRSTNAME)
-      .lastName(LASTNAME)
-      .emailAddress(EMAILADDRESS)
-      .departmentID(DEPARTMENTID)
-      .department(DEPARTMENT)
-      .onlineStatus(ONLINESTATUS)
-      .role(ROLE)
+      .firstName(firstName)
+      .lastName(lastName)
+      .userName(userName)
+      .onlineStatus(onlineStatus)
+      .emailAddress(emailAddress)
+      .department(department)
       .build();
 
     EmployeeEntity employee = repository.save(employeeEntity);
 
-    assertEquals(USERNAME, employee.getUserName());
-    assertEquals(FIRSTNAME, employee.getFirstName());
-    assertEquals(LASTNAME, employee.getLastName());
-    assertEquals(EMAILADDRESS, employee.getEmailAddress());
-    assertEquals(DEPARTMENTID, employee.getDepartmentID());
-    assertEquals(DEPARTMENT, employee.getDepartment());
-    assertEquals(ONLINESTATUS, employee.getOnlineStatus());
-    assertEquals(ROLE, employee.getRole());
+    assertAll(
+      () -> assertEquals(userName, employee.getUserName()),
+      () -> assertEquals(firstName, employee.getFirstName()),
+      () -> assertEquals(lastName, employee.getLastName()),
+      () -> assertEquals(emailAddress, employee.getEmailAddress()),
+      () -> assertEquals(onlineStatus, employee.getOnlineStatus()),
+      () -> assertEquals(department, employee.getDepartment())
+    );
   }
 
   @Test
   void should_find_all_employees() {
-    final String DEPARTMENT = "Marketing";
-    final UUID DEPARTMENTID = UUID.randomUUID();
     final String USERNAME = "joeUser2";
     final String EMAILADDRESS = "mail2@outlook.com";
     final String FIRSTNAME = "John";
     final String LASTNAME = "Doe";
     final Boolean ONLINESTATUS = true;
-    final String ROLE = "Manager";
 
-    final String DEPARTMENT2 = "HR";
-    final UUID DEPARTMENTID2 = UUID.randomUUID();
     final String USERNAME2 = "morenoUser2";
     final String EMAILADDRESS2 = "moreno2@mail.com";
     final String FIRSTNAME2 = "Francesco";
     final String LASTNAME2 = "Moreno";
     final Boolean ONLINESTATUS2 = false;
-    final String ROLE2 = "Deputy";
+
+    final String departmentFirstName1 = "John";
+    final String departmentLastName1 = "Doe";
+    final String departmentJobTitle1 = "Manager";
+    final String departmentName1 = "Accounting";
+    final LocalDate departmentHireDate1 = LocalDate.now();
+    final String departmentRegionName1 = "West Coast";
+
+    final String departmentFirstName2 = "Francesco";
+    final String departmentLastName2 = "Moreno";
+    final String departmentJobTitle2 = "CEO";
+    final String departmentName2 = "Sales";
+    final LocalDate departmentHireDate2 = LocalDate.now();
+    final String departmentRegionName2 = "East Coast";
+
+    DepartmentEntity department1 = DepartmentEntity
+      .builder()
+      .firstName(departmentFirstName1)
+      .lastName(departmentLastName1)
+      .jobTitle(departmentJobTitle1)
+      .departmentName(departmentName1)
+      .hireDate(departmentHireDate1)
+      .regionName(departmentRegionName1)
+      .build();
+
+    DepartmentEntity department2 = DepartmentEntity
+      .builder()
+      .firstName(departmentFirstName2)
+      .lastName(departmentLastName2)
+      .departmentName(departmentName2)
+      .jobTitle(departmentJobTitle2)
+      .hireDate(departmentHireDate2)
+      .regionName(departmentRegionName2)
+      .build();
 
     EmployeeEntity employeeEntity1 = EmployeeEntity
       .builder()
-      .department(DEPARTMENT)
-      .departmentID(DEPARTMENTID)
+      .department(department1)
       .userName(USERNAME)
       .firstName(FIRSTNAME)
       .lastName(LASTNAME)
+      .department(department1)
       .emailAddress(EMAILADDRESS)
       .onlineStatus(ONLINESTATUS)
-      .role(ROLE)
       .build();
 
     repository.save(employeeEntity1);
@@ -98,15 +140,12 @@ public class EmployeeRepositoryTest {
       .userName(USERNAME2)
       .firstName(FIRSTNAME2)
       .lastName(LASTNAME2)
-      .department(DEPARTMENT2)
-      .departmentID(DEPARTMENTID2)
+      .department(department2)
       .emailAddress(EMAILADDRESS2)
       .onlineStatus(ONLINESTATUS2)
-      .role(ROLE2)
       .build();
 
     repository.save(employeeEntity2);
-
     List<EmployeeEntity> employees = repository.findAll();
 
     assertThat(employees).hasSize(2).contains(employeeEntity1, employeeEntity2);
@@ -116,21 +155,35 @@ public class EmployeeRepositoryTest {
   void should_find_employe_by_id() {
     final String USERNAME = "joeUser";
     final String EMAILADDRESS = "mail@outlook.com";
-    final String DEPARTMENT = "Marketing";
     final String FIRSTNAME = "John";
     final String LASTNAME = "Doe";
     final Boolean ONLINESTATUS = true;
-    final String ROLE = "Manager";
+
+    final String departmentFirstName = "John";
+    final String departmentLastName = "Doe";
+    final String departmentJobTitle = "Manager";
+    final String departmentName = "Accounting";
+    final LocalDate departmentHireDate = LocalDate.now();
+    final String departmentRegionName = "West Coast";
+
+    DepartmentEntity department = DepartmentEntity
+      .builder()
+      .firstName(departmentFirstName)
+      .lastName(departmentLastName)
+      .jobTitle(departmentJobTitle)
+      .departmentName(departmentName)
+      .hireDate(departmentHireDate)
+      .regionName(departmentRegionName)
+      .build();
 
     EmployeeEntity employeeEntity = EmployeeEntity
       .builder()
       .userName(USERNAME)
       .firstName(FIRSTNAME)
       .lastName(LASTNAME)
-      .department(DEPARTMENT)
+      .department(department)
       .emailAddress(EMAILADDRESS)
       .onlineStatus(ONLINESTATUS)
-      .role(ROLE)
       .build();
 
     repository.save(employeeEntity);
@@ -146,51 +199,77 @@ public class EmployeeRepositoryTest {
     final String USERNAME = "joeUser";
     final String EMAILADDRESS = "mail@outlook.com";
     final String FIRSTNAME = "John";
-    final String DEPARTMENT = "Marketing";
     final String LASTNAME = "Doe";
     final Boolean ONLINESTATUS = true;
-    final String ROLE = "Manager";
+
+    final String departmentFirstName = "John";
+    final String departmentLastName = "Doe";
+    final String departmentJobTitle = "Manager";
+    final String departmentName = "Sales";
+    final LocalDate departmentHireDate = LocalDate.now();
+    final String departmentRegionName = "West Coast";
 
     final String EMAILADDRESS2 = "paul@outlook.com";
     final Boolean ONLINESTATUS2 = false;
-    final String ROLE2 = "Boss";
+
+    DepartmentEntity department = DepartmentEntity
+      .builder()
+      .firstName(departmentFirstName)
+      .lastName(departmentLastName)
+      .jobTitle(departmentJobTitle)
+      .departmentName(departmentName)
+      .hireDate(departmentHireDate)
+      .regionName(departmentRegionName)
+      .build();
 
     EmployeeEntity employeeEntity = EmployeeEntity
       .builder()
       .userName(USERNAME)
       .firstName(FIRSTNAME)
       .lastName(LASTNAME)
-      .department(DEPARTMENT)
+      .department(department)
       .emailAddress(EMAILADDRESS)
       .onlineStatus(ONLINESTATUS)
-      .role(ROLE)
       .build();
 
     repository.save(employeeEntity);
 
     EmployeeEntity employee = repository.findById(employeeEntity.getId()).get();
 
-    employee
-      .setEmailAddress(EMAILADDRESS2)
-      .setOnlineStatus(ONLINESTATUS2)
-      .setRole(ROLE2);
+    employee.setEmailAddress(EMAILADDRESS2).setOnlineStatus(ONLINESTATUS2);
 
     EmployeeEntity updatedEmployee = repository.save(employee);
 
-    assertEquals(EMAILADDRESS2, updatedEmployee.getEmailAddress());
-    assertEquals(ONLINESTATUS2, updatedEmployee.getOnlineStatus());
-    assertEquals(ROLE2, updatedEmployee.getRole());
+    assertAll(
+      () -> assertEquals(EMAILADDRESS2, updatedEmployee.getEmailAddress()),
+      () -> assertEquals(ONLINESTATUS2, updatedEmployee.getOnlineStatus())
+    );
   }
 
   @Test
   void should_delete_employee_by_id() {
     final String USERNAME = "joeUser";
-    final String DEPARTMENT = "Marketing";
     final String EMAILADDRESS = "mail@outlook.com";
     final String FIRSTNAME = "John";
     final String LASTNAME = "Doe";
     final Boolean ONLINESTATUS = true;
-    final String ROLE = "Manager";
+
+    final String departmentFirstName = "John";
+    final String departmentLastName = "Doe";
+    final String departmentName = "Sales";
+    final String departmentJobTitle = "Manager";
+    final LocalDate departmentHireDate = LocalDate.now();
+    final String departmentRegionName = "West Coast";
+
+    DepartmentEntity department = DepartmentEntity
+      .builder()
+      .firstName(departmentFirstName)
+      .lastName(departmentLastName)
+      .departmentName(departmentName)
+      .jobTitle(departmentJobTitle)
+      .hireDate(departmentHireDate)
+      .regionName(departmentRegionName)
+      .build();
 
     EmployeeEntity employee = EmployeeEntity
       .builder()
@@ -198,71 +277,90 @@ public class EmployeeRepositoryTest {
       .emailAddress(EMAILADDRESS)
       .firstName(FIRSTNAME)
       .lastName(LASTNAME)
-      .department(DEPARTMENT)
+      .department(department)
       .onlineStatus(ONLINESTATUS)
-      .role(ROLE)
       .build();
 
     EmployeeEntity saveEmployee = repository.save(employee);
 
     assertThat(saveEmployee).isNotNull();
-
     repository.deleteById(saveEmployee.getId());
-
     assertThat(repository.findById(saveEmployee.getId())).isEmpty();
   }
 
-  // @Test
-  // void should_delete_all_employees() {
-  //   final String USERNAME = "joeUser";
-  //   final String EMAILADDRESS = "mail@outlook.com";
-  //   final String FIRSTNAME = "John";
-  //   final String LASTNAME = "Doe";
-  //   final String DEPARTMENT = "Marketing";
-  //   final Boolean ONLINESTATUS = true;
-  //   final String ROLE = "Manager";
-
-  //   final String USERNAME2 = "morenoUser";
-  //   final String EMAILADDRESS2 = "moreno2@mail.com";
-  //   final String DEPARTMENT2 = "HR";
-  //   final String FIRSTNAME2 = "Francesco";
-  //   final String LASTNAME2 = "Moreno";
-  //   final Boolean ONLINESTATUS2 = false;
-  //   final String ROLE2 = "Deputy";
-
-  //   EmployeeEntity employeeEntity1 = EmployeeEntity
-  //     .builder()
-  //     .userName(USERNAME)
-  //     .firstName(FIRSTNAME)
-  //     .lastName(LASTNAME)
-  //     .department(DEPARTMENT)
-  //     .emailAddress(EMAILADDRESS)
-  //     .onlineStatus(ONLINESTATUS)
-  //     .role(ROLE)
-  //     .build();
-
-  //   EmployeeEntity employeeEntity2 = EmployeeEntity
-  //     .builder()
-  //     .userName(USERNAME2)
-  //     .firstName(FIRSTNAME2)
-  //     .lastName(LASTNAME2)
-  //     .department(DEPARTMENT2)
-  //     .emailAddress(EMAILADDRESS2)
-  //     .onlineStatus(ONLINESTATUS2)
-  //     .role(ROLE2)
-  //     .build();
-
-  //   // repository.save(employeeEntity1);
-  //   // repository.save(employeeEntity2);
-  //   entityManager.persist(employeeEntity1);
-  //   entityManager.persist(employeeEntity2);
-  //   repository.deleteAll();
-  //   assertThat(repository.findAll()).hasSize(0);
-  // }
-
   @Test
-  void should_return_false_if_username_already_exists() {}
+  void should_delete_all_employees() {
+    final String USERNAME = "joeUser";
+    final String EMAILADDRESS = "mail@outlook.com";
+    final String FIRSTNAME = "John";
+    final String LASTNAME = "Doe";
+    final Boolean ONLINESTATUS = true;
 
-  @Test
-  void should_insert_user_if_username_does_not_exists() {}
+    final String USERNAME2 = "morenoUser";
+    final String EMAILADDRESS2 = "moreno2@mail.com";
+    final String FIRSTNAME2 = "Francesco";
+    final String LASTNAME2 = "Moreno";
+    final Boolean ONLINESTATUS2 = false;
+
+    final String departmentFirstName1 = "John";
+    final String departmentLastName1 = "Doe";
+    final String departmentJobTitle1 = "Manager";
+    final String departmentName1 = "Accounting";
+    final LocalDate departmentHireDate1 = LocalDate.now();
+    final String departmentRegionName1 = "West Coast";
+
+    final String departmentFirstName2 = "Francesco";
+    final String departmentLastName2 = "Moreno";
+    final String departmentJobTitle2 = "CEO";
+    final String departmentName2 = "Sales";
+    final LocalDate departmentHireDate2 = LocalDate.now();
+    final String departmentRegionName2 = "East Coast";
+
+    DepartmentEntity department1 = DepartmentEntity
+      .builder()
+      .firstName(departmentFirstName1)
+      .lastName(departmentLastName1)
+      .jobTitle(departmentJobTitle1)
+      .departmentName(departmentName1)
+      .hireDate(departmentHireDate1)
+      .regionName(departmentRegionName1)
+      .build();
+
+    DepartmentEntity department2 = DepartmentEntity
+      .builder()
+      .firstName(departmentFirstName2)
+      .lastName(departmentLastName2)
+      .departmentName(departmentName2)
+      .jobTitle(departmentJobTitle2)
+      .hireDate(departmentHireDate2)
+      .regionName(departmentRegionName2)
+      .build();
+
+
+    EmployeeEntity employeeEntity1 = EmployeeEntity
+      .builder()
+      .userName(USERNAME)
+      .firstName(FIRSTNAME)
+      .lastName(LASTNAME)
+      .department(department1)
+      .emailAddress(EMAILADDRESS)
+      .onlineStatus(ONLINESTATUS)
+      .build();
+
+    EmployeeEntity employeeEntity2 = EmployeeEntity
+      .builder()
+      .userName(USERNAME2)
+      .firstName(FIRSTNAME2)
+      .lastName(LASTNAME2)
+      .department(department2)
+      .emailAddress(EMAILADDRESS2)
+      .onlineStatus(ONLINESTATUS2)
+      .build();
+
+    repository.save(employeeEntity1);
+    repository.save(employeeEntity2);
+  
+    repository.deleteAll();
+    assertThat(repository.findAll()).hasSize(0);
+  }
 }

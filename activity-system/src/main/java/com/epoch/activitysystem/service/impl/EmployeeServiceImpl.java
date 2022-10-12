@@ -1,17 +1,20 @@
 package com.epoch.activitysystem.service.impl;
 
-import com.epoch.activitysystem.entity.EmployeeEntity;
-import com.epoch.activitysystem.exceptions.EmployeeNotFoundException;
-import com.epoch.activitysystem.repository.EmployeeRepository;
-import com.epoch.activitysystem.service.EmployeeService;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.epoch.activitysystem.entity.DepartmentEntity;
+import com.epoch.activitysystem.entity.EmployeeEntity;
+import com.epoch.activitysystem.exceptions.EmployeeNotFoundException;
+import com.epoch.activitysystem.repository.DepartmentRepository;
+import com.epoch.activitysystem.repository.EmployeeRepository;
+import com.epoch.activitysystem.service.EmployeeService;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -20,7 +23,11 @@ public class EmployeeServiceImpl implements EmployeeService {
   @Autowired
   EmployeeRepository repository;
 
+  @Autowired
+  DepartmentRepository departmentRepo;
+
   @Override
+  @Transactional
   public EmployeeEntity save(EmployeeEntity employee) {
     log.info("Calling save employee service.");
     return repository.save(toEntity(employee));
@@ -65,16 +72,26 @@ public class EmployeeServiceImpl implements EmployeeService {
   }
 
   private EmployeeEntity toEntity(EmployeeEntity entity) {
+    DepartmentEntity department = DepartmentEntity
+      .builder()
+      .firstName(entity.getFirstName())
+      .lastName(entity.getLastName())
+      .departmentName(entity.getDepartment().getDepartmentName())
+      .hireDate(LocalDate.now())
+      .jobTitle(entity.getDepartment().getJobTitle())
+      .regionName(entity.getDepartment().getRegionName())
+      .build();
+
+    DepartmentEntity savedDepartment = departmentRepo.save(department);
+
     return EmployeeEntity
       .builder()
       .firstName(entity.getFirstName())
       .lastName(entity.getLastName())
       .userName(entity.getUserName())
-      .departmentID(UUID.randomUUID())
-      .department(entity.getDepartment())
+      .department(savedDepartment)
       .emailAddress(entity.getEmailAddress())
-      .role(entity.getRole())
-      .onlineStatus(entity.getOnlineStatus())
+      .onlineStatus(false)
       .build();
   }
 
@@ -97,7 +114,6 @@ public class EmployeeServiceImpl implements EmployeeService {
       )
       .setEmailAddress(updatedEmployee.getEmailAddress())
       .setUserName(updatedEmployee.getUserName())
-      .setOnlineStatus(updatedEmployee.getOnlineStatus())
-      .setRole(updatedEmployee.getRole());
+      .setOnlineStatus(updatedEmployee.getOnlineStatus());
   }
 }

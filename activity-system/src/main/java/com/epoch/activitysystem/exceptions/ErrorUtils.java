@@ -7,14 +7,14 @@ import lombok.NoArgsConstructor;
 @Data
 public class ErrorUtils {
 
-  static ErrorEntity createError(
+  public static ErrorEntity createError(
     final String message,
-    final String code,
+    final String type,
     final Integer httpStatusCode
   ) {
     ErrorEntity error = new ErrorEntity();
     error.setMessage(message);
-    error.setErrorCode(code);
+    error.setType(type);
     error.setStatus(httpStatusCode);
     return error;
   }
