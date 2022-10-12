@@ -1,15 +1,15 @@
 package com.epoch.activitysystem.exceptions;
 
 import java.time.Instant;
-import org.apache.logging.log4j.util.Strings;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
 
 @NoArgsConstructor
 @Data
 public class ErrorEntity {
 
-  private String errorCode;
+  private String type;
   private String message;
   private Integer status;
   private String url = "Not available";

@@ -1,16 +1,5 @@
 package com.epoch.activitysystem.controller;
 
-import com.epoch.activitysystem.configuration.constants.swagger.SwaggerConstants;
-import com.epoch.activitysystem.entity.EmployeeEntity;
-import com.epoch.activitysystem.exceptions.ErrorEntity;
-import com.epoch.activitysystem.service.EmployeeService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -27,6 +16,17 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.epoch.activitysystem.configuration.constants.swagger.SwaggerConstants;
+import com.epoch.activitysystem.entity.EmployeeEntity;
+import com.epoch.activitysystem.exceptions.ErrorEntity;
+import com.epoch.activitysystem.service.EmployeeService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "employee", description = "Registers all employees to the system")
 @RestController
@@ -65,7 +65,7 @@ public class EmployeeController {
     }
   )
   public ResponseEntity<EmployeeEntity> createEmployee(
-   @Valid @RequestBody EmployeeEntity employee
+    @Valid @RequestBody EmployeeEntity employee
   ) {
     return new ResponseEntity<>(service.save(employee), HttpStatus.CREATED);
   }
@@ -182,7 +182,6 @@ public class EmployeeController {
     @PathVariable("id") UUID id,
     @Valid @RequestBody EmployeeEntity employee
   ) {
-    // service.findById(id).orElse
     return new ResponseEntity<>(
       service.updateById(id, employee),
       HttpStatus.OK
@@ -197,6 +196,7 @@ public class EmployeeController {
         description = SwaggerConstants.ENTITY_DELETED_DESCRIPTION,
         content = {
           @Content(
+            mediaType = MediaType.APPLICATION_JSON_VALUE,
             examples = @ExampleObject(
               description = "The client will receive a Map with a message property.",
               name = "message",
@@ -223,8 +223,6 @@ public class EmployeeController {
   public ResponseEntity<Map<String, String>> deleteEmployeeById(
     @PathVariable("id") UUID id
   ) {
-    System.out.println("=================================== Made it here");
-
     return new ResponseEntity<>(service.deleteBy(id), HttpStatus.OK);
   }
 

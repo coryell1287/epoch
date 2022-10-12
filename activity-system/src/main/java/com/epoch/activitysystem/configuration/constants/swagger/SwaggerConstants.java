@@ -13,5 +13,10 @@ public interface SwaggerConstants {
   public static final String ALL_ENTITITES_DELETED_DESCRIPTION = "All entities deleted successfully.";
   public static final String EMPLOYEE_NOT_FOUND = "Employee not found";
   public static final String NOT_FOUND_CODE = "404";
+  public static final String MESSAGE  = "message";
+  public static final String MAP_DELETION_MESSAGE_DESCRIPTION = "Client will receive a Map with message property.";
+  public static final String MAP_DELETION_VALUE = "{ message: " +
+  SwaggerConstants.ALL_ENTITITES_DELETED_DESCRIPTION +
+  " }";
   
 }

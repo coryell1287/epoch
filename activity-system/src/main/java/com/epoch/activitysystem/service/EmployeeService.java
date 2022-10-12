@@ -8,15 +8,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface EmployeeService {
-  public EmployeeEntity save(EmployeeEntity employee);
+  EmployeeEntity save(EmployeeEntity employee);
 
-  public EmployeeEntity findById(UUID id);
+  EmployeeEntity findById(UUID id);
 
-  public List<EmployeeEntity> findAll();
+  List<EmployeeEntity> findAll();
 
-  public EmployeeEntity updateById(UUID id, EmployeeEntity employee);
+  EmployeeEntity updateById(UUID id, EmployeeEntity employee);
 
-  public Map<String, String> deleteBy(UUID id);
+  Map<String, String> deleteBy(UUID id);
 
-  public Map<String, String> deleteAll();
+  Map<String, String> deleteAll();
+
 }
