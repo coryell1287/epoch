@@ -336,7 +336,6 @@ public class EmployeeRepositoryTest {
       .regionName(departmentRegionName2)
       .build();
 
-
     EmployeeEntity employeeEntity1 = EmployeeEntity
       .builder()
       .userName(USERNAME)
@@ -359,8 +358,8 @@ public class EmployeeRepositoryTest {
 
     repository.save(employeeEntity1);
     repository.save(employeeEntity2);
-  
+
     repository.deleteAll();
-    assertThat(repository.findAll()).hasSize(0);
+    assertThat(repository.findAll()).isEmpty();
   }
 }

@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.persistence.Version;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -42,6 +43,9 @@ public class EmployeeEntity {
   @Column(name = "ID", nullable = false)
   private UUID id;
 
+  @Version
+  Long version;
+  
   @Column(name = "FIRST_NAME")
   private String firstName;
 
