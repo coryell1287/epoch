@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import org.springframework.data.annotation.CreatedDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,6 +28,9 @@ public class DepartmentEntity {
   @GeneratedValue
   @Column(name = "ID", nullable = false)
   private UUID id;
+
+  @Version
+  Long version;
 
   @Column(name = "FIRST_NAME")
   private String firstName;
