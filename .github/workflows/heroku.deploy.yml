@@ -1,0 +1,44 @@
+name: CI to GHCR 
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        name: Checkout
+        uses: actions/checkout@v2
+      -       
+        name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      -     
+        name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+  
+      -
+        name: Run tests
+        uses: actions/checkout@v2
+        run:  docker-compose -f docker-compose.test.yml up --build
+      -
+        name: Deploy to Heroku
+        id: heroku_deploy
+        uses: AkhileshNS/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.SBHEROKU_API_KEY}}
+          heroku_email: ${{secrets.SBHEROKU_EMAIL}}
+          heroku_app_name: ${{secrets.SBHEROKU_APP}}
+      -
+        name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
+      
+     
